@@ -17,6 +17,7 @@ def split_string(str):
 
 def overlap(str1, str2):
     ret_str = ""
+    # check_str contains already checked chars to no doublecount
     check_str = ""
     for char in str1:
         if char in str2 and char not in check_str:
@@ -33,10 +34,26 @@ def rucksack_overlap_prio(str):
             prio += get_prio(char)
     return prio
 
+def badge(str_lst):
+    # Overlap between strings 1 and 2, 2 and 3, 3 and 1
+    ol_12 = overlap(str_lst[0], str_lst[1])
+    ol_23 = overlap(str_lst[1], str_lst[2])
+    ol_31 = overlap(str_lst[2], str_lst[0])
+    # The overlap between the overlap strings should then yield the badge
+    badge = overlap(overlap(ol_12, ol_23), ol_31)
+    return badge
+
 data = open("input", "r")
-rucksack = data.readline()
+rucksacks = ["", "", ""]
+for i in range(0, len(rucksacks)):
+    rucksacks[i] = data.readline()
 overlap_sum = 0
-while rucksack:
-    overlap_sum += rucksack_overlap_prio(rucksack)
-    rucksack = data.readline()
+badge_sum = 0
+while rucksacks[0]:
+    badge_sum += get_prio(badge(rucksacks).strip())
+    for i in range(0, len(rucksacks)):
+        overlap_sum += rucksack_overlap_prio(rucksacks[i])
+        rucksacks[i] = data.readline()
+
 print("Total overlap sum: {}".format(overlap_sum))
+print("Total badge sum: {}".format(badge_sum))
