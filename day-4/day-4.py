@@ -11,29 +11,27 @@ def is_subset(range1, range2):
         return True
     else:
         return False
-def testing_task1():
-    test_cases = ["2-4,6-8",
-        "2-3,4-5",
-        "5-7,7-9",
-        "2-8,3-7",
-        "6-6,4-6",
-        "2-6,4-8"]
-    for case in test_cases:
-        ranges = get_ranges(case)
-        if is_subset(ranges[0], ranges[1]): 
-            print("{} is fully contained in {}".format(ranges[1], ranges[0]))
-        elif is_subset(ranges[1],ranges[0]):
-            print("{} is fully contained in {}".format(ranges[0], ranges[1]))
-        else:
-            print("Neither of {} and {} are fully contained in each other".format(
-                ranges[0], ranges[1]))
+def overlap(range1, range2):
+    # range1 = [n_r1, m_r1], range2 = [n_r2, m_r2]
+    # if n_r1 <= m_r2 <= m_r1 we have overlap, ex r1=[3,9], r2 = [1,4]
+    if (range2[1] >= range1[0]) and (range2[1] <= range1[1]):
+        return True
+    # if n_r2 <= m_r1 <= m_r2 we have overlap, ex r1=[2,7], r2=[7, 8]
+    elif (range1[1] >= range2[0]) and (range1[1] <= range2[1]):
+        return True
+    else:
+        return False
 
 data = open("input", "r")
 line = data.readline()
 fcp = 0 #fully contained pairs
+olp = 0 #overlapping pairs
 while line:
     ranges = get_ranges(line)
     if is_subset(ranges[0], ranges[1]) or (is_subset(ranges[1], ranges[0])):
         fcp += 1
+    if overlap(ranges[0], ranges[1]):
+        olp += 1
     line = data.readline()
 print("There are {} fully contained pairs".format(fcp))
+print("There are {} overlapping paris".format(olp))
