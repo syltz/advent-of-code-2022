@@ -36,7 +36,8 @@ while (line):# and (counter < 5):
     # Remove the boxes from the original stack
     stacks[stack_source] = stacks[stack_source][no_boxes:]
     # Move the boxes on to the new stack in reversed order
-    stacks[stack_target] = boxes_to_move[::-1] +stacks[stack_target]
+    # Change to boxes_to_move[::-1] for task one, this is for task two
+    stacks[stack_target] = boxes_to_move[::1] + stacks[stack_target]
     line = data.readline()
     print(stacks)
     counter += 1
